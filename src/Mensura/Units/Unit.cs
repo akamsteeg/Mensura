@@ -13,7 +13,7 @@ namespace Mensura.Units
         /// <summary>
         /// 
         /// </summary>
-        protected double Value
+        public double Value
         {
             get; // Auto-implemented readonly property
         }
