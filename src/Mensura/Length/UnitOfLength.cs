@@ -6,7 +6,7 @@ namespace Mensura.Length
   /// Represents a unit of length
   /// </summary>
   public abstract class UnitOfLength
-    : IUnitOfLength
+    : Unit, IComparable<UnitOfLength>, IEquatable<UnitOfLength>
   {
     /// <summary>
     /// Gets or sets the backing field for the <see cref="Value"/> property
@@ -16,12 +16,12 @@ namespace Mensura.Length
     /// <summary>
     /// Gets or sets the cached Internal System of Units (SI) <see cref="UnitOfLength"/>
     /// </summary>
-    private IUnitOfLength _siValue;
+    private UnitOfLength _siValue;
 
     /// <summary>
     /// Gets the value
     /// </summary>
-    public decimal Value
+    public override decimal Value
     {
       get
       {
@@ -41,25 +41,7 @@ namespace Mensura.Length
     /// <param name="valueToAdd">
     /// The value to add
     /// </param>
-    public virtual void Add(decimal valueToAdd)
-    {
-      var newValue = this.Value + valueToAdd;
-
-      if (newValue <= 0)
-      {
-        newValue = 0;
-      }
-
-      this.Value = newValue;
-    }
-
-    /// <summary>
-    /// Add the specified value to the existing value
-    /// </summary>
-    /// <param name="valueToAdd">
-    /// The value to add
-    /// </param>
-    public virtual void Add(IUnitOfLength valueToAdd)
+    public virtual void Add(UnitOfLength valueToAdd)
     {
       _ = valueToAdd ?? throw new ArgumentNullException(nameof(valueToAdd));
 
@@ -89,16 +71,18 @@ namespace Mensura.Length
     /// the same position in the sort order as other. Greater than zero This
     /// instance follows other in the sort order
     /// </returns>
-    public virtual int CompareTo(IUnitOfLength other)
+    public virtual int CompareTo(UnitOfLength other)
     {
       var thisSiValue = this._siValue.Value;
 
-      if (other == null || thisSiValue == other.ToSI().Value)
-        return 0;
-      else if (thisSiValue > other.ToSI().Value)
-        return -1;
+      var result = 0;
+
+      if (other == (object)null)
+        result = 1;
       else
-        return 1;
+        result = thisSiValue.CompareTo(other.ToSI().Value);
+
+      return result;
     }
 
     /// <summary>
@@ -111,9 +95,9 @@ namespace Mensura.Length
     /// <returns>
     /// True if the current object is equal to the other parameter; otherwise, false
     /// </returns>
-    public virtual bool Equals(IUnitOfLength other)
+    public virtual bool Equals(UnitOfLength other)
     {
-      var result = other != null && this._siValue.Value == other.ToSI().Value;
+      var result = other != (object)null && this._siValue.Value == other.ToSI().Value;
 
       return result;
     }
@@ -132,7 +116,7 @@ namespace Mensura.Length
     {
       var result = false;
 
-      if (obj is IUnitOfLength otherUnitOfLength)
+      if (obj is UnitOfLength otherUnitOfLength)
       {
         result = this._siValue.Value == otherUnitOfLength.ToSI().Value;
       }
@@ -148,17 +132,17 @@ namespace Mensura.Length
     /// </returns>
     public override int GetHashCode() => this.Value.GetHashCode();
 
-    public static bool operator ==(UnitOfLength left, IUnitOfLength right) => left.Equals(right);
+    public static bool operator ==(UnitOfLength left, UnitOfLength right) => left.Equals(right);
     public static bool operator ==(UnitOfLength left, IComparable right) => left.Value.Equals(right);
-    public static bool operator !=(UnitOfLength left, IUnitOfLength right) => !left.Equals(right);
+    public static bool operator !=(UnitOfLength left, UnitOfLength right) => !left.Equals(right);
     public static bool operator !=(UnitOfLength left, IComparable right) => !left.Value.Equals(right);
-    public static bool operator <(UnitOfLength left, IUnitOfLength right) => left.ToSI().Value < right.ToSI().Value;
+    public static bool operator <(UnitOfLength left, UnitOfLength right) => left.ToSI().Value < right.ToSI().Value;
     public static bool operator <(UnitOfLength left, IComparable right) => left.Value.CompareTo(right) < 0;
-    public static bool operator <=(UnitOfLength left, IUnitOfLength right) => left.ToSI().Value <= right.ToSI().Value;
+    public static bool operator <=(UnitOfLength left, UnitOfLength right) => left.ToSI().Value <= right.ToSI().Value;
     public static bool operator <=(UnitOfLength left, IComparable right) => left.Value.CompareTo(right) <= 0;
-    public static bool operator >(UnitOfLength left, IUnitOfLength right) => left.ToSI().Value > right.ToSI().Value;
+    public static bool operator >(UnitOfLength left, UnitOfLength right) => left.ToSI().Value > right.ToSI().Value;
     public static bool operator >(UnitOfLength left, IComparable right) => left.Value.CompareTo(right) > 0;
-    public static bool operator >=(UnitOfLength left, IUnitOfLength right) => left.ToSI().Value >= right.ToSI().Value;
+    public static bool operator >=(UnitOfLength left, UnitOfLength right) => left.ToSI().Value >= right.ToSI().Value;
     public static bool operator >=(UnitOfLength left, IComparable right) => left.Value.CompareTo(right) >= 0;
   }
 }
