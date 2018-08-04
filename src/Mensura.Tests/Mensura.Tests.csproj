@@ -14,4 +14,7 @@
     <ProjectReference Include="..\Mensura\Mensura.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="coverage.json" />
+  </ItemGroup>
 </Project>
