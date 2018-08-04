@@ -13,11 +13,29 @@ namespace Mensura.Length
     where T : UnitOfLength, new()
   {
     /// <summary>
-   /// Creates a new object that is a copy of the current instance
-   /// </summary>
-   /// <returns>
-   /// A new object that is a copy of this instance
-   /// </returns>
+    /// Initializes a new instance of <see cref="UnitOfLength{T}"/>
+    /// </summary>
+    protected UnitOfLength()
+      : base()
+    { }
+
+    /// <summary>
+    /// Initializes a new instance of <see cref="UnitOfLength{T}"/> with the
+    /// specified value
+    /// </summary>
+    /// <param name="value">
+    /// The value
+    /// </param>
+    protected UnitOfLength(decimal value)
+      : base(value)
+    { }
+
+    /// <summary>
+    /// Creates a new object that is a copy of the current instance
+    /// </summary>
+    /// <returns>
+    /// A new object that is a copy of this instance
+    /// </returns>
     public override object Clone()
     {
       var result = new T();

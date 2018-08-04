@@ -36,6 +36,26 @@ namespace Mensura.Length
     }
 
     /// <summary>
+    /// Initializes a new instance of <see cref="UnitOfLength"/>
+    /// </summary>
+    protected UnitOfLength() => this.Value = 0;
+
+    /// <summary>
+    /// Initializes a new instance of <see cref="UnitOfLength"/> with the
+    /// specified value
+    /// </summary>
+    /// <param name="value">
+    /// The value
+    /// </param>
+    protected UnitOfLength(decimal value)
+    {
+      if (value < 0)
+        throw new ArgumentOutOfRangeException("Value cannot be less than 0");
+
+      this.Value = value;
+    }
+
+    /// <summary>
     /// Add the specified value to the existing value
     /// </summary>
     /// <param name="valueToAdd">
@@ -45,7 +65,11 @@ namespace Mensura.Length
     {
       _ = valueToAdd ?? throw new ArgumentNullException(nameof(valueToAdd));
 
-      this.Value += valueToAdd.ToSI().Value;
+      var siValue = this.ToSI();
+
+      siValue += valueToAdd.ToSI().Value;
+
+      this.Value = this.FromSI(siValue);
     }
 
     /// <summary>
@@ -55,6 +79,18 @@ namespace Mensura.Length
     /// The value, converted to the SI <see cref="Metre" />
     /// </returns>
     public abstract Metre ToSI();
+
+    /// <summary>
+    /// Convert the Internal System Of Units (SI) <see cref="Metre"/> to the
+    /// correct decimal value for this <see cref="UnitOfLength"/>
+    /// </summary>
+    /// <param name="siValue">
+    /// The SI <see cref="Metre"/> value to convert
+    /// </param>
+    /// <returns>
+    /// The specified SI <see cref="Metre"/> converted to the correct value
+    /// </returns>
+    protected abstract decimal FromSI(Metre siValue);
 
     /// <summary>
     /// Compares the current instance with another object of the same type and
@@ -119,6 +155,10 @@ namespace Mensura.Length
       if (obj is UnitOfLength otherUnitOfLength)
       {
         result = this._siValue.Value == otherUnitOfLength.ToSI().Value;
+      }
+      else if (obj is IComparable otherValue)
+      {
+        result = this.Value.CompareTo(otherValue) == 0;
       }
 
       return result;
