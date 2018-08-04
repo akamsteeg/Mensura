@@ -39,7 +39,38 @@ namespace Mensura.Length
     }
 
     /// <summary>
-    /// Overrides the subscription (-) operator
+    /// Overrides the addition (+) operator
+    /// </summary>
+    /// <param name="left">
+    /// The left <see cref="UnitOfLength"/> of the operation
+    /// </param>
+    /// <param name="right">
+    /// The rigth value of the operation
+    /// </param>
+    /// <returns>
+    /// A new instance of <see cref="T"/> with the two values added
+    /// </returns>
+    public static T operator +(UnitOfLength<T> left, decimal right)
+    {
+      _ = left ?? throw new ArgumentNullException(nameof(left));
+
+      var result = new T();
+
+      var value = left.Value + right;
+
+      result.Add(value);
+
+      return result;
+    }
+
+    public static T operator +(UnitOfLength<T> left, long right) => left + (decimal)right;
+    public static T operator +(UnitOfLength<T> left, int right) => left + (decimal)right;
+    public static T operator +(UnitOfLength<T> left, byte right) => left + (decimal)right;
+    public static T operator +(UnitOfLength<T> left, double right) => left + (decimal)right;
+    public static T operator +(UnitOfLength<T> left, float right) => left + (decimal)right;
+
+    /// <summary>
+    /// Overrides the substraction (-) operator
     /// </summary>
     /// <param name="left">
     /// The left <see cref="UnitOfLength"/> of the operation
@@ -63,6 +94,37 @@ namespace Mensura.Length
 
       return result;
     }
+
+    /// <summary>
+    /// Overrides the substraction (-) operator
+    /// </summary>
+    /// <param name="left">
+    /// The left <see cref="UnitOfLength"/> of the operation
+    /// </param>
+    /// <param name="right">
+    /// The rigth <see cref="IUnitOfLength"/> of the operation
+    /// </param>
+    /// <returns>
+    /// A new instance of <see cref="T"/> with the the right value substracted from the left
+    /// </returns>
+    public static T operator -(UnitOfLength<T> left, decimal right)
+    {
+      _ = left ?? throw new ArgumentNullException(nameof(left));
+
+      var result = new T();
+
+      var value = left.Value - right;
+
+      result.Add(value);
+
+      return result;
+    }
+
+    public static T operator -(UnitOfLength<T> left, long right) => left - (decimal)right;
+    public static T operator -(UnitOfLength<T> left, int right) => left - (decimal)right;
+    public static T operator -(UnitOfLength<T> left, byte right) => left - (decimal)right;
+    public static T operator -(UnitOfLength<T> left, double right) => left - (decimal)right;
+    public static T operator -(UnitOfLength<T> left, float right) => left - (decimal)right;
 
     /// <summary>
     /// Overrides the division (/) operator
@@ -91,6 +153,37 @@ namespace Mensura.Length
     }
 
     /// <summary>
+    /// Overrides the division (/) operator
+    /// </summary>
+    /// <param name="left">
+    /// The left <see cref="UnitOfLength"/> of the operation
+    /// </param>
+    /// <param name="right">
+    /// The rigth value of the operation
+    /// </param>
+    /// <returns>
+    /// A new instance of <see cref="T"/> with the left value divided by the right value
+    /// </returns>
+    public static T operator /(UnitOfLength<T> left, decimal right)
+    {
+      _ = left ?? throw new ArgumentNullException(nameof(left));
+
+      var result = new T();
+
+      var value = left.Value / right;
+
+      result.Add(value);
+
+      return result;
+    }
+
+    public static T operator /(UnitOfLength<T> left, long right) => left / (decimal)right;
+    public static T operator /(UnitOfLength<T> left, int right) => left / (decimal)right;
+    public static T operator /(UnitOfLength<T> left, byte right) => left / (decimal)right;
+    public static T operator /(UnitOfLength<T> left, double right) => left / (decimal)right;
+    public static T operator /(UnitOfLength<T> left, float right) => left / (decimal)right;
+
+    /// <summary>
     /// Overrides the multiplication (*) operator
     /// </summary>
     /// <param name="left">
@@ -115,5 +208,36 @@ namespace Mensura.Length
 
       return result;
     }
+
+    /// <summary>
+    /// Overrides the multiplication (*) operator
+    /// </summary>
+    /// <param name="left">
+    /// The left <see cref="UnitOfLength"/> of the operation
+    /// </param>
+    /// <param name="right">
+    /// The rigth <see cref="IUnitOfLength"/> of the operation
+    /// </param>
+    /// <returns>
+    /// A new instance of <see cref="T"/> with the left value multiplied by the right value
+    /// </returns>
+    public static T operator *(UnitOfLength<T> left, decimal right)
+    {
+      _ = left ?? throw new ArgumentNullException(nameof(left));
+
+      var result = new T();
+
+      var value = left.Value * right;
+
+      result.Add(value);
+
+      return result;
+    }
+
+    public static T operator *(UnitOfLength<T> left, long right) => left * (decimal)right;
+    public static T operator *(UnitOfLength<T> left, int right) => left * (decimal)right;
+    public static T operator *(UnitOfLength<T> left, byte right) => left * (decimal)right;
+    public static T operator *(UnitOfLength<T> left, double right) => left * (decimal)right;
+    public static T operator *(UnitOfLength<T> left, float right) => left * (decimal)right;
   }
 }

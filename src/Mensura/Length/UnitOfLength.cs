@@ -148,88 +148,17 @@ namespace Mensura.Length
     /// </returns>
     public override int GetHashCode() => this.Value.GetHashCode();
 
-    /// <summary>
-    /// Overrides the equality (==) operator
-    /// </summary>
-    /// <param name="left">
-    /// The left <see cref="UnitOfLength"/> of the comparison
-    /// </param>
-    /// <param name="right">
-    /// The rigth <see cref="IUnitOfLength"/> of the comparison
-    /// </param>
-    /// <returns>
-    /// True when left and right match; false otherwise
-    /// </returns>
     public static bool operator ==(UnitOfLength left, IUnitOfLength right) => left.Equals(right);
-
-    /// <summary>
-    /// Overrides the not-equals (!=) operator
-    /// </summary>
-    /// <param name="left">
-    /// The left <see cref="UnitOfLength"/> of the comparison
-    /// </param>
-    /// <param name="right">
-    /// The rigth <see cref="IUnitOfLength"/> of the comparison
-    /// </param>
-    /// <returns>
-    /// True when left and right do not match; false otherwise
-    /// </returns>
+    public static bool operator ==(UnitOfLength left, IComparable right) => left.Value.Equals(right);
     public static bool operator !=(UnitOfLength left, IUnitOfLength right) => !left.Equals(right);
-
-    /// <summary>
-    /// Overrides the less-than (&lt;) operator
-    /// </summary>
-    /// <param name="left">
-    /// The left <see cref="UnitOfLength"/> of the comparison
-    /// </param>
-    /// <param name="right">
-    /// The rigth <see cref="IUnitOfLength"/> of the comparison
-    /// </param>
-    /// <returns>
-    /// True when left is less than right; false otherwise
-    /// </returns>
+    public static bool operator !=(UnitOfLength left, IComparable right) => !left.Value.Equals(right);
     public static bool operator <(UnitOfLength left, IUnitOfLength right) => left.ToSI().Value < right.ToSI().Value;
-
-    /// <summary>
-    /// Overrides the less-than-or-equal-to (&lt;=) operator
-    /// </summary>
-    /// <param name="left">
-    /// The left <see cref="UnitOfLength"/> of the comparison
-    /// </param>
-    /// <param name="right">
-    /// The rigth <see cref="IUnitOfLength"/> of the comparison
-    /// </param>
-    /// <returns>
-    /// True when left is less than or equal to right; false otherwise
-    /// </returns>
+    public static bool operator <(UnitOfLength left, IComparable right) => left.Value.CompareTo(right) < 0;
     public static bool operator <=(UnitOfLength left, IUnitOfLength right) => left.ToSI().Value <= right.ToSI().Value;
-
-    /// <summary>
-    /// Overrides the greater-than (&gt;) operator
-    /// </summary>
-    /// <param name="left">
-    /// The left <see cref="UnitOfLength"/> of the comparison
-    /// </param>
-    /// <param name="right">
-    /// The rigth <see cref="IUnitOfLength"/> of the comparison
-    /// </param>
-    /// <returns>
-    /// True when left is greater than right; false otherwise
-    /// </returns>
+    public static bool operator <=(UnitOfLength left, IComparable right) => left.Value.CompareTo(right) <= 0;
     public static bool operator >(UnitOfLength left, IUnitOfLength right) => left.ToSI().Value > right.ToSI().Value;
-
-    /// <summary>
-    /// Overrides the greater-than-or-equal-to (&gt;=) operator
-    /// </summary>
-    /// <param name="left">
-    /// The left <see cref="UnitOfLength"/> of the comparison
-    /// </param>
-    /// <param name="right">
-    /// The rigth <see cref="IUnitOfLength"/> of the comparison
-    /// </param>
-    /// <returns>
-    /// True when left is greater than or equal to right; false otherwise
-    /// </returns>
+    public static bool operator >(UnitOfLength left, IComparable right) => left.Value.CompareTo(right) > 0;
     public static bool operator >=(UnitOfLength left, IUnitOfLength right) => left.ToSI().Value >= right.ToSI().Value;
+    public static bool operator >=(UnitOfLength left, IComparable right) => left.Value.CompareTo(right) >= 0;
   }
 }
