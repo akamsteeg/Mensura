@@ -12,25 +12,6 @@
     public virtual decimal Value
     {
       get;
-      protected set;
-    }
-
-    /// <summary>
-    /// Add the specified value to the existing value
-    /// </summary>
-    /// <param name="valueToAdd">
-    /// The value to add
-    /// </param>
-    public virtual void Add(decimal valueToAdd)
-    {
-      var newValue = this.Value + valueToAdd;
-
-      if (newValue <= 0)
-      {
-        newValue = 0;
-      }
-
-      this.Value = newValue;
     }
 
     /// <summary>

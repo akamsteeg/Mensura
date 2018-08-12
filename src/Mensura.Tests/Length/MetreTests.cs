@@ -26,23 +26,13 @@ namespace Mensura.Tests.Length
     }
 
     [Fact]
-    public void Add_1MetreTo2Metres_Equals3()
+    public void Add_1CentimetreTo2Metres_Equals21()
     {
       var m = new Metre(2);
 
-      m.Add(new Metre(1));
+      m += new Centimetre(1);
 
-      Assert.Equal(3, m.Value);
-    }
-
-    [Fact]
-    public void Add_1DecimetreTo2Metres_Equals21()
-    {
-      var m = new Metre(2);
-
-      m += new Decimetre(1);
-
-      Assert.Equal(2.1m, m.Value);
+      Assert.Equal(2.01m, m.Value);
     }
   }
 }

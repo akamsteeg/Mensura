@@ -6,33 +6,14 @@ namespace Mensura.Length
   /// Represents a unit of length
   /// </summary>
   public abstract class UnitOfLength
-    : Unit, IComparable<UnitOfLength>, IEquatable<UnitOfLength>
+    : Unit, ISIConvertable<Metre>, IComparable<UnitOfLength>, IEquatable<UnitOfLength>
   {
-    /// <summary>
-    /// Gets or sets the backing field for the <see cref="Value"/> property
-    /// </summary>
-    private decimal _value;
-
-    /// <summary>
-    /// Gets or sets the cached Internal System of Units (SI) <see cref="UnitOfLength"/>
-    /// </summary>
-    private UnitOfLength _siValue;
-
     /// <summary>
     /// Gets the value
     /// </summary>
     public override decimal Value
     {
-      get
-      {
-        return this._value;
-      }
-      protected set
-      {
-        this._value = value;
-
-        this._siValue = this.ToSI();
-      }
+      get;
     }
 
     /// <summary>
@@ -48,28 +29,40 @@ namespace Mensura.Length
     /// The value
     /// </param>
     protected UnitOfLength(decimal value)
+      : this(value, ValueType.NonSI)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of <see cref="UnitOfLength"/> with the
+    /// specified value and <see cref="ValueType"/>
+    /// </summary>
+    /// <param name="value">
+    /// The value
+    /// </param>
+    /// <param name="type">
+    /// The <see cref="ValueType"/> of the value
+    /// </param>
+    protected UnitOfLength(decimal value, ValueType type)
     {
       if (value < 0)
         throw new ArgumentOutOfRangeException("Value cannot be less than 0");
 
-      this.Value = value;
-    }
-
-    /// <summary>
-    /// Add the specified value to the existing value
-    /// </summary>
-    /// <param name="valueToAdd">
-    /// The value to add
-    /// </param>
-    public virtual void Add(UnitOfLength valueToAdd)
-    {
-      _ = valueToAdd ?? throw new ArgumentNullException(nameof(valueToAdd));
-
-      var siValue = this.ToSI();
-
-      siValue += valueToAdd.ToSI().Value;
-
-      this.Value = this.FromSI(siValue);
+      switch (type)
+      {
+        case ValueType.NonSI:
+          {
+            this.Value = value;
+            break;
+          }
+        case ValueType.SI:
+          {
+            this.Value = this.FromSI(value);
+            break;
+          }
+        default:
+          throw new InvalidOperationException($"Specified value type '{type}' is not supported");
+      }
     }
 
     /// <summary>
@@ -78,19 +71,46 @@ namespace Mensura.Length
     /// <returns>
     /// The value, converted to the SI <see cref="Metre" />
     /// </returns>
-    public abstract Metre ToSI();
+    public virtual Metre ToSI()
+    {
+      Metre result;
+
+      if (this.Value != 0)
+      {
+        result = new Metre(this.ToSI(this.Value));
+      }
+      else
+      {
+        result = new Metre(0);
+      }
+
+      return result;
+    }
 
     /// <summary>
-    /// Convert the Internal System Of Units (SI) <see cref="Metre"/> to the
-    /// correct decimal value for this <see cref="UnitOfLength"/>
+    /// Convert the specified native value to the corresponding Internal System
+    /// of Units (SI) value
     /// </summary>
-    /// <param name="siValue">
-    /// The SI <see cref="Metre"/> value to convert
+    /// <param name="nativeValue">
+    /// The native value
     /// </param>
     /// <returns>
-    /// The specified SI <see cref="Metre"/> converted to the correct value
+    /// The native value, converted to the Internal System of Units (SI) value
     /// </returns>
-    protected abstract decimal FromSI(Metre siValue);
+    protected abstract decimal ToSI(decimal nativeValue);
+
+    /// <summary>
+    /// Convert the specified Internal System of Units (SI) value to the
+    /// corresponding native value
+    /// </summary>
+    /// <param name="siValue">
+    /// The Internal System of Units (SI) value
+    /// </param>
+    /// <returns>
+    /// The specified Internal System of Units (SI) value, converted to the
+    /// corresponding native value
+    /// </returns>
+    protected abstract decimal FromSI(decimal siValue);
 
     /// <summary>
     /// Compares the current instance with another object of the same type and
@@ -109,7 +129,7 @@ namespace Mensura.Length
     /// </returns>
     public virtual int CompareTo(UnitOfLength other)
     {
-      var thisSiValue = this._siValue.Value;
+      var thisSiValue = this.ToSI().Value;
 
       var result = 0;
 
@@ -133,7 +153,7 @@ namespace Mensura.Length
     /// </returns>
     public virtual bool Equals(UnitOfLength other)
     {
-      var result = other != (object)null && this._siValue.Value == other.ToSI().Value;
+      var result = other != (object)null && this.ToSI().Value == other.ToSI().Value;
 
       return result;
     }
@@ -154,7 +174,7 @@ namespace Mensura.Length
 
       if (obj is UnitOfLength otherUnitOfLength)
       {
-        result = this._siValue.Value == otherUnitOfLength.ToSI().Value;
+        result = this.ToSI().Value == otherUnitOfLength.ToSI().Value;
       }
       else if (obj is IComparable otherValue)
       {

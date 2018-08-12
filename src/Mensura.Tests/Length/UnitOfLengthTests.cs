@@ -12,56 +12,18 @@ namespace Mensura.Tests.Length
     {
       this._objectToTest = objectToTest ?? throw new ArgumentNullException(nameof(objectToTest));
     }
-
-    [Fact]
-    public void Add_WithZeroValueToAdd_DoesNotThrow()
-    {
-      this._objectToTest.Add(0);
-    }
-
+    
     [Fact]
     public void ToSI_ReturnsMetre()
     {
       Assert.IsType<Metre>(this._objectToTest.ToSI());
     }
-
-    [Fact]
-    public void Add_NegativeValueToZero_SetsValuePropertyToZero()
-    {
-      this._objectToTest.Add(-this._objectToTest.Value); // Set value to zero
-
-      this._objectToTest.Add(-100);
-
-      Assert.Equal(0, this._objectToTest.Value);
-    }
-
-    [Fact]
-    public void Add_One_IncreasesValueWithOne()
-    {
-      var expectedValue = this._objectToTest.Value + 1;
-
-      this._objectToTest.Add(1);
-
-      Assert.Equal(expectedValue, this._objectToTest.Value);
-    }
-
-    [Fact]
-    public void Add_ObjectToItself_DoublesValue()
-    {
-      var expectedValue = this._objectToTest.Value * 2;
-
-      this._objectToTest.Add(this._objectToTest);
-
-      Assert.Equal(expectedValue, this._objectToTest.Value);
-    }
-
     [Fact]
     public void CompareTo_WithSmallerValue_ReturnsPlusOne()
     {
-      var testValue = (UnitOfLength)this._objectToTest.Clone();
-      testValue.Add(-1);
+      var objectToCompareWith = (UnitOfLength)Activator.CreateInstance(this._objectToTest.GetType(), this._objectToTest.Value - 1);
 
-      var comparisonResult = this._objectToTest.CompareTo(testValue);
+      var comparisonResult = this._objectToTest.CompareTo(objectToCompareWith);
 
       Assert.Equal(1, comparisonResult);
     }
@@ -69,10 +31,11 @@ namespace Mensura.Tests.Length
     [Fact]
     public void CompareTo_WithBiggerValue_ReturnsMinusOne()
     {
-      var testValue = (UnitOfLength)this._objectToTest.Clone();
-      testValue.Add(1);
+      var testValue = this._objectToTest.Value + 1;
 
-      var comparisonResult = this._objectToTest.CompareTo(testValue);
+      var objectToCompareWith = (UnitOfLength)Activator.CreateInstance(this._objectToTest.GetType(), testValue);
+
+      var comparisonResult = this._objectToTest.CompareTo(objectToCompareWith);
 
       Assert.Equal(-1, comparisonResult);
     }
@@ -104,9 +67,7 @@ namespace Mensura.Tests.Length
     [Fact]
     public void Equals_WithDifferentValue_ReturnsFalse()
     {
-      var objectToCompareWith = (UnitOfLength)this._objectToTest.Clone();
-
-      objectToCompareWith.Add(1);
+      var objectToCompareWith = (UnitOfLength)Activator.CreateInstance(this._objectToTest.GetType(), this._objectToTest.Value - 1);
 
       Assert.False(this._objectToTest.Equals(objectToCompareWith));
     }
@@ -122,9 +83,7 @@ namespace Mensura.Tests.Length
     [Fact]
     public void Equals_WithDifferentValueAsObject_ReturnsFalse()
     {
-      var objectToCompareWith = (UnitOfLength)this._objectToTest.Clone();
-
-      objectToCompareWith.Add(1);
+      var objectToCompareWith = (UnitOfLength)Activator.CreateInstance(this._objectToTest.GetType(), this._objectToTest.Value - 1);
 
       Assert.False(this._objectToTest.Equals((object)objectToCompareWith));
     }
@@ -132,9 +91,7 @@ namespace Mensura.Tests.Length
     [Fact]
     public void Equals_WithDifferentValueAsIComparable_ReturnsFalse()
     {
-      var objectToCompareWith = (UnitOfLength)this._objectToTest.Clone();
-
-      objectToCompareWith.Add(1);
+      var objectToCompareWith = (UnitOfLength)Activator.CreateInstance(this._objectToTest.GetType(), this._objectToTest.Value - 1);
 
       Assert.False(this._objectToTest.Equals((IComparable)objectToCompareWith.Value));
     }
@@ -164,9 +121,7 @@ namespace Mensura.Tests.Length
     [Fact]
     public void EqualityOperator_WithDifferentValue_ReturnsFalse()
     {
-      var objectToCompareWith = (UnitOfLength)this._objectToTest.Clone();
-
-      objectToCompareWith.Add(1);
+      var objectToCompareWith = (UnitOfLength)Activator.CreateInstance(this._objectToTest.GetType(), this._objectToTest.Value - 1);
 
       Assert.False(this._objectToTest == objectToCompareWith);
     }
@@ -194,9 +149,7 @@ namespace Mensura.Tests.Length
     [Fact]
     public void NotEqualsOperator_WithDifferentValue_ReturnsTrue()
     {
-      var objectToCompareWith = (UnitOfLength)this._objectToTest.Clone();
-
-      objectToCompareWith.Add(1);
+      var objectToCompareWith = (UnitOfLength)Activator.CreateInstance(this._objectToTest.GetType(), this._objectToTest.Value - 1);
 
       Assert.True(this._objectToTest != objectToCompareWith);
     }
@@ -218,9 +171,7 @@ namespace Mensura.Tests.Length
     [Fact]
     public void LessThanOperator_WithBiggerValue_ReturnsTrue()
     {
-      var objectToCompareWith = (UnitOfLength)this._objectToTest.Clone();
-
-      objectToCompareWith.Add(1);
+      var objectToCompareWith = (UnitOfLength)Activator.CreateInstance(this._objectToTest.GetType(), this._objectToTest.Value + 1);
 
       Assert.True(this._objectToTest < objectToCompareWith);
     }
@@ -252,9 +203,7 @@ namespace Mensura.Tests.Length
     [Fact]
     public void GreaterThanOperator_WithBiggerValue_ReturnsFalse()
     {
-      var objectToCompareWith = (UnitOfLength)this._objectToTest.Clone();
-
-      objectToCompareWith.Add(1);
+      var objectToCompareWith = (UnitOfLength)Activator.CreateInstance(this._objectToTest.GetType(), this._objectToTest.Value + 1);
 
       Assert.False(this._objectToTest > objectToCompareWith);
     }
@@ -286,9 +235,7 @@ namespace Mensura.Tests.Length
     [Fact]
     public void LessThanOrEqualToOperator_WithBiggerValue_ReturnsTrue()
     {
-      var objectToCompareWith = (UnitOfLength)this._objectToTest.Clone();
-
-      objectToCompareWith.Add(1);
+      var objectToCompareWith = (UnitOfLength)Activator.CreateInstance(this._objectToTest.GetType(), this._objectToTest.Value + 1);
 
       Assert.True(this._objectToTest <= objectToCompareWith);
     }
@@ -312,9 +259,7 @@ namespace Mensura.Tests.Length
     [Fact]
     public void GreaterThanOrEqualToOperator_WithBiggerValue_ReturnsFalse()
     {
-      var objectToCompareWith = (UnitOfLength)this._objectToTest.Clone();
-
-      objectToCompareWith.Add(1);
+      var objectToCompareWith = (UnitOfLength)Activator.CreateInstance(this._objectToTest.GetType(), this._objectToTest.Value + 1);
 
       Assert.False(this._objectToTest >= objectToCompareWith);
     }

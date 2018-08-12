@@ -28,30 +28,49 @@ namespace Mensura.Length
     }
 
     /// <summary>
-    /// Convert the value to the Internal System of Units (SI) <see cref="Metre"/>
+    /// Initializes a new instance of <see cref="Metre"/> with the
+    /// specified value and <see cref="ValueType"/>
     /// </summary>
-    /// <returns>
-    /// The value, converted to the SI <see cref="Metre" />
-    /// </returns>
-    public override Metre ToSI() => this;
+    /// <param name="value">
+    /// The value
+    /// </param>
+    /// <param name="type">
+    /// The <see cref="ValueType"/> of the value
+    /// </param>
+    public Metre(decimal value, ValueType type)
+      : base(value, type)
+    {
+    }
 
     /// <summary>
-    /// Convert the Internal System Of Units (SI) <see cref="Metre"/> to the
-    /// correct decimal value for this <see cref="UnitOfLength"/>
+    /// Convert the specified native value to the corresponding Internal System
+    /// of Units (SI) value
     /// </summary>
-    /// <param name="siValue">
-    /// The SI <see cref="Metre"/> value to convert
+    /// <param name="nativeValue">
+    /// The native value
     /// </param>
     /// <returns>
-    /// The specified SI <see cref="Metre"/> converted to the correct value
+    /// The native value, converted to the Internal System of Units (SI) value
     /// </returns>
-    protected override decimal FromSI(Metre siValue)
+    protected override decimal ToSI(decimal nativeValue)
     {
-      _ = siValue ?? throw new ArgumentNullException(nameof(siValue));
+      return nativeValue;
+    }
 
-      var result = siValue.Value;
-
-      return result;
+    /// <summary>
+    /// Convert the specified Internal System of Units (SI) value to the
+    /// corresponding native value
+    /// </summary>
+    /// <param name="siValue">
+    /// The Internal System of Units (SI) value
+    /// </param>
+    /// <returns>
+    /// The specified Internal System of Units (SI) value, converted to the
+    /// corresponding native value
+    /// </returns>
+    protected override decimal FromSI(decimal siValue)
+    {
+      return siValue;
     }
   }
 }

@@ -31,6 +31,20 @@ namespace Mensura.Length
     { }
 
     /// <summary>
+    /// Initializes a new instance of <see cref="UnitOfLength{T}"/> with the
+    /// specified value and <see cref="ValueType"/>
+    /// </summary>
+    /// <param name="value">
+    /// The value
+    /// </param>
+    /// <param name="type">
+    /// The <see cref="ValueType"/> of the value
+    /// </param>
+    protected UnitOfLength(decimal value, ValueType type)
+      : base(value, type)
+    { }
+
+    /// <summary>
     /// Creates a new object that is a copy of the current instance
     /// </summary>
     /// <returns>
@@ -38,9 +52,7 @@ namespace Mensura.Length
     /// </returns>
     public override object Clone()
     {
-      var result = new T();
-
-      result.Add(this.Value);
+      var result = (T)Activator.CreateInstance(typeof(T), this.Value);
 
       return result;
     }
@@ -50,11 +62,9 @@ namespace Mensura.Length
       _ = left ?? throw new ArgumentNullException(nameof(left));
       _ = right ?? throw new ArgumentNullException(nameof(right));
 
-      var result = new T();
+      var value = left.ToSI().Value + right.ToSI().Value;
 
-      var value = left.Value + right.ToSI().Value;
-
-      result.Add(value);
+      var result = (T)Activator.CreateInstance(typeof(T), value, ValueType.SI);
 
       return result;
     }
@@ -63,11 +73,9 @@ namespace Mensura.Length
     {
       _ = left ?? throw new ArgumentNullException(nameof(left));
 
-      var result = new T();
-
       var value = left.Value + right;
 
-      result.Add(value);
+      var result = (T)Activator.CreateInstance(typeof(T), value, ValueType.NonSI);
 
       return result;
     }
@@ -83,11 +91,9 @@ namespace Mensura.Length
       _ = left ?? throw new ArgumentNullException(nameof(left));
       _ = right ?? throw new ArgumentNullException(nameof(right));
 
-      var result = new T();
+      var value = left.ToSI().Value - right.ToSI().Value;
 
-      var value = left.Value - right.ToSI().Value;
-
-      result.Add(value);
+      var result = (T)Activator.CreateInstance(typeof(T), value, ValueType.SI);
 
       return result;
     }
@@ -96,11 +102,9 @@ namespace Mensura.Length
     {
       _ = left ?? throw new ArgumentNullException(nameof(left));
 
-      var result = new T();
-
       var value = left.Value - right;
 
-      result.Add(value);
+      var result = (T)Activator.CreateInstance(typeof(T), value, ValueType.NonSI);
 
       return result;
     }
@@ -116,11 +120,9 @@ namespace Mensura.Length
       _ = left ?? throw new ArgumentNullException(nameof(left));
       _ = right ?? throw new ArgumentNullException(nameof(right));
 
-      var result = new T();
+      var value = left.ToSI().Value / right.ToSI().Value;
 
-      var value = left.Value / right.ToSI().Value;
-
-      result.Add(value);
+      var result = (T)Activator.CreateInstance(typeof(T), value, ValueType.SI);
 
       return result;
     }
@@ -129,11 +131,9 @@ namespace Mensura.Length
     {
       _ = left ?? throw new ArgumentNullException(nameof(left));
 
-      var result = new T();
-
       var value = left.Value / right;
 
-      result.Add(value);
+      var result = (T)Activator.CreateInstance(typeof(T), value, ValueType.NonSI);
 
       return result;
     }
@@ -149,11 +149,9 @@ namespace Mensura.Length
       _ = left ?? throw new ArgumentNullException(nameof(left));
       _ = right ?? throw new ArgumentNullException(nameof(right));
 
-      var result = new T();
+      var value = left.ToSI().Value * right.ToSI().Value;
 
-      var value = left.Value * right.ToSI().Value;
-
-      result.Add(value);
+      var result = (T)Activator.CreateInstance(typeof(T), value, ValueType.SI);
 
       return result;
     }
@@ -162,11 +160,9 @@ namespace Mensura.Length
     {
       _ = left ?? throw new ArgumentNullException(nameof(left));
 
-      var result = new T();
-
       var value = left.Value * right;
 
-      result.Add(value);
+      var result = (T)Activator.CreateInstance(typeof(T), value, ValueType.NonSI);
 
       return result;
     }
