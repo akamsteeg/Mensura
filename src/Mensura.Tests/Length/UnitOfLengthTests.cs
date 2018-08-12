@@ -12,12 +12,13 @@ namespace Mensura.Tests.Length
     {
       this._objectToTest = objectToTest ?? throw new ArgumentNullException(nameof(objectToTest));
     }
-    
+
     [Fact]
     public void ToSI_ReturnsMetre()
     {
       Assert.IsType<Metre>(this._objectToTest.ToSI());
     }
+
     [Fact]
     public void CompareTo_WithSmallerValue_ReturnsPlusOne()
     {

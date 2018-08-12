@@ -10,7 +10,6 @@ namespace Mensura.Tests.Length
     public DecimetreTests()
       : base(new Decimetre(5))
     {
-
     }
 
     [Fact]

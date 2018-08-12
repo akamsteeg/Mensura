@@ -75,7 +75,7 @@ namespace Mensura.Length
 
       var value = left.Value + right;
 
-      var result = (T)Activator.CreateInstance(typeof(T), value, ValueType.NonSI);
+      var result = (T)Activator.CreateInstance(typeof(T), value, ValueType.Native);
 
       return result;
     }
@@ -104,7 +104,7 @@ namespace Mensura.Length
 
       var value = left.Value - right;
 
-      var result = (T)Activator.CreateInstance(typeof(T), value, ValueType.NonSI);
+      var result = (T)Activator.CreateInstance(typeof(T), value, ValueType.Native);
 
       return result;
     }
@@ -122,7 +122,7 @@ namespace Mensura.Length
 
       var value = left.ToSI().Value / right.ToSI().Value;
 
-      var result = (T)Activator.CreateInstance(typeof(T), value, ValueType.SI);
+      var result = (T)Activator.CreateInstance(typeof(T), value, ValueType.Native);
 
       return result;
     }
@@ -133,7 +133,7 @@ namespace Mensura.Length
 
       var value = left.Value / right;
 
-      var result = (T)Activator.CreateInstance(typeof(T), value, ValueType.NonSI);
+      var result = (T)Activator.CreateInstance(typeof(T), value, ValueType.Native);
 
       return result;
     }
@@ -149,9 +149,10 @@ namespace Mensura.Length
       _ = left ?? throw new ArgumentNullException(nameof(left));
       _ = right ?? throw new ArgumentNullException(nameof(right));
 
-      var value = left.ToSI().Value * right.ToSI().Value;
+      var rightAsSameType = (T)Activator.CreateInstance(typeof(T), right.ToSI().Value, ValueType.SI);
+      var value = left.Value * rightAsSameType.Value;
 
-      var result = (T)Activator.CreateInstance(typeof(T), value, ValueType.SI);
+      var result = (T)Activator.CreateInstance(typeof(T), value, ValueType.Native);
 
       return result;
     }
@@ -162,7 +163,7 @@ namespace Mensura.Length
 
       var value = left.Value * right;
 
-      var result = (T)Activator.CreateInstance(typeof(T), value, ValueType.NonSI);
+      var result = (T)Activator.CreateInstance(typeof(T), value, ValueType.Native);
 
       return result;
     }

@@ -29,7 +29,7 @@ namespace Mensura.Length
     /// The value
     /// </param>
     protected UnitOfLength(decimal value)
-      : this(value, ValueType.NonSI)
+      : this(value, ValueType.Native)
     {
     }
 
@@ -50,7 +50,7 @@ namespace Mensura.Length
 
       switch (type)
       {
-        case ValueType.NonSI:
+        case ValueType.Native:
           {
             this.Value = value;
             break;
